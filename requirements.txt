@@ -1,0 +1,55 @@
+# ==================== 核心依赖 ====================
+opencv-python>=4.5.0
+numpy>=1.19.0
+
+# ==================== Jupyter 交互界面 ====================
+ipywidgets>=7.6.0
+IPython>=7.0.0
+
+# ==================== 机械臂驱动（按需安装） ====================
+# Arm_Lib 需要根据硬件环境单独安装，请参考硬件厂商提供的 SDK。
+# 如果你是华为 200DK 环境，可通过以下方式安装：
+#   git clone https://github.com/your-arm-sdk-repo.git
+#   cd arm-sdk && python setup.py install
+#
+# 如果在非 200DK 环境（如树莓派/PC）测试，可使用模拟模式，
+# 代码中已通过 try/except 处理 Arm_Lib 导入失败的情况。
+```
+
+---
+
+### 📦 一键安装命令
+
+在项目根目录执行：
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+### 🔧 各平台安装说明
+
+| 运行环境 | 安装命令 | 备注 |
+|:---------|:---------|:-----|
+| **PC / 树莓派（仅测试）** | `pip install opencv-python numpy ipywidgets` | 无需 `Arm_Lib`，代码会自动降级为模拟模式 |
+| **华为 200DK** | 先安装 `opencv-python-headless`（推荐）或 `opencv-python`，再安装 `Arm_Lib` SDK | 注意 200DK 的 Python 版本通常为 3.7/3.8 |
+| **Jupyter Notebook** | 依赖同上，确保 `ipywidgets` 已启用：`jupyter nbextension enable --py widgetsnbextension` | — |
+
+---
+
+### 💡 常见问题
+
+**Q：`Arm_Lib` 从哪里获取？**  
+A：`Arm_Lib` 是特定机械臂厂商提供的驱动库，通常随硬件附赠或从厂商 GitHub 下载。如果你的机械臂是其他品牌，需要替换为对应的驱动库，并调整 `write_arm_pose` 函数中的调用方式。
+
+**Q：我在树莓派上运行报错怎么办？**  
+A：树莓派建议使用 `opencv-python-headless`（无 GUI 依赖），并确保摄像头已启用：`sudo raspi-config` → Interface Options → Camera → Enable。
+
+**Q：`ipywidgets` 在 Jupyter Lab 中不显示画面？**  
+A：需要额外安装 Jupyter Lab 扩展：
+```bash
+jupyter labextension install @jupyter-widgets/jupyterlab-manager
+```
+
+---
